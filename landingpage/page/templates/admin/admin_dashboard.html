@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>{% block title %}Just Admin Dashboard{% endblock title %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-open-btn-transform {
+            transform: translateX(16rem); /* 16rem is the width of the sidebar (w-64) */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex flex-col md:flex-row h-screen overflow-hidden">
+        {% include "nav/admin_nav.html" %}
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <button id="desktop-sidebar-toggle" class="hidden md:inline-flex fixed top-6 left-6 z-10 items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-transform duration-300 ease-in-out">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            {% block content %}{% endblock content %}
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const addOrderBtn = document.getElementById('add-order-btn');
+            const orderListBody = document.getElementById('order-list-body');
+            const totalVisitorsEl = document.getElementById('total-visitors-count');
+            const todayOrdersEl = document.getElementById('today-orders-count');
+            const allOrdersEl = document.getElementById('all-orders-count');
+            const submittedOrdersEl = document.getElementById('submitted-orders-count');
+            const completedOrdersEl = document.getElementById('completed-orders-count');
+            const cancelledOrdersEl = document.getElementById('cancelled-orders-count');
+            
+            let orders = [
+                { id: 1001, product: 'Wireless Mouse', customer: 'John Doe', date: '2025-09-18', status: 'Completed' },
+                { id: 1002, product: 'Keyboard', customer: 'Jane Smith', date: '2025-09-19', status: 'Submitted' },
+                { id: 1003, product: 'Monitor', customer: 'Peter Jones', date: '2025-09-19', status: 'Completed' },
+                { id: 1004, product: 'Webcam', customer: 'Sara Lee', date: '2025-09-19', status: 'Cancelled' },
+            ];
+
+            function hideDesktopSidebar() {
+                sidebar.classList.remove('md:w-64');
+                sidebar.classList.add('w-0');
+                sidebarContent.classList.replace('opacity-100', 'opacity-0');
+                desktopSidebarToggle.classList.remove('sidebar-open-btn-transform');
+                
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+            }
+
+            function showDesktopSidebar() {
+                sidebar.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    sidebar.classList.remove('w-0');
+                    sidebar.classList.add('md:w-64');
+                    sidebarContent.classList.replace('opacity-0', 'opacity-100');
+                    desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+                }, 10);
+            }
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            desktopSidebarToggle.addEventListener('click', () => {
+                const isVisible = sidebar.classList.contains('md:w-64');
+                if (isVisible) {
+                    hideDesktopSidebar();
+                } else {
+                    showDesktopSidebar();
+                }
+            });
+
+            addOrderBtn.addEventListener('click', addNewOrder);
+
+            function addNewOrder() {
+                const sampleProducts = ['Laptop', 'Headphones', 'USB Cable', 'Charger', 'Desk Lamp'];
+                const sampleCustomers = ['Mike Ross', 'Harvey Specter', 'Louis Litt', 'Donna Paulsen'];
+                const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1001;
+                const newOrder = { id: newId, product: sampleProducts[Math.floor(Math.random() * sampleProducts.length)], customer: sampleCustomers[Math.floor(Math.random() * sampleCustomers.length)], date: getTodayDateString(), status: 'Submitted' };
+                orders.push(newOrder);
+                renderOrders();
+                updateStats();
+            }
+
+            function renderOrders() {
+                orderListBody.innerHTML = '';
+                orders.slice().reverse().forEach(order => {
+                    orderListBody.appendChild(renderOrderRow(order));
+                });
+            }
+
+            function updateStats() {
+                const todayString = getTodayDateString();
+                const todayCount = orders.filter(o => o.date === todayString).length;
+                const allCount = orders.length;
+                const submittedCount = orders.filter(o => o.status === 'Submitted').length;
+                const completedCount = orders.filter(o => o.status === 'Completed').length;
+                const cancelledCount = orders.filter(o => o.status === 'Cancelled').length;
+                totalVisitorsEl.textContent = '1,452';
+                todayOrdersEl.textContent = todayCount;
+                allOrdersEl.textContent = allCount;
+                submittedOrdersEl.textContent = submittedCount;
+                completedOrdersEl.textContent = completedCount;
+                cancelledOrdersEl.textContent = cancelledCount;
+            }
+
+            function getTodayDateString() {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            function renderOrderRow(order) {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 hover:bg-gray-50';
+                let statusClass = '';
+                switch (order.status) {
+                    case 'Completed': statusClass = 'bg-green-100 text-green-800'; break;
+                    case 'Submitted': statusClass = 'bg-yellow-100 text-yellow-800'; break;
+                    case 'Cancelled': statusClass = 'bg-red-100 text-red-800'; break;
+                }
+                row.innerHTML = `<td class="py-3 px-6 font-medium">#${order.id}</td><td class="py-3 px-6">${order.product}</td><td class="py-3 px-6">${order.customer}</td><td class="py-3 px-6">${order.date}</td><td class="py-3 px-6"><span class="py-1 px-3 rounded-full text-xs ${statusClass}">${order.status}</span></td>`;
+                return row;
+            }
+            
+            if (sidebar.classList.contains('md:w-64')) {
+                desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+            }
+            renderOrders();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
