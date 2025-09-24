@@ -1,0 +1,128 @@
+{% extends "admin/admin_dashboard.html" %}
+
+{% block title %}Users{% endblock title %}
+
+{% block content %}
+
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 ml-20">Customer Management</h1>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                    Add Customer
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                     <div class="relative w-full md:w-1/3">
+                        <input type="text" placeholder="Search customers..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 uppercase text-sm">
+                                <th class="py-3 px-4">Customer</th>
+                                <th class="py-3 px-4">Contact Info</th>
+                                <th class="py-3 px-4">Location</th>
+                                <th class="py-3 px-4">Joined Date</th>
+                                <th class="py-3 px-4">Total Spent</th>
+                                <th class="py-3 px-4 text-center">Status</th>
+                                <th class="py-3 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customer-table-body" class="text-gray-700">
+                            </tbody>
+                    </table>
+                </div>
+
+                 <div class="flex justify-between items-center mt-6">
+                    <span class="text-sm text-gray-500">Showing 1 to 5 of 50 entries</span>
+                    <div class="flex items-center">
+                        <button class="px-3 py-1 border rounded-lg hover:bg-gray-100">Previous</button>
+                        <span class="px-3 py-1 text-white bg-blue-500 rounded-lg mx-2">1</span>
+                        <button class="px-3 py-1 border rounded-lg hover:bg-gray-100">Next</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- SIDEBAR LOGIC (UNCHANGED) ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            function hideDesktopSidebar() { sidebar.classList.remove('md:w-64'); sidebar.classList.add('w-0'); sidebarContent.classList.replace('opacity-100', 'opacity-0'); desktopSidebarToggle.classList.remove('sidebar-open-btn-transform'); setTimeout(() => sidebar.classList.add('hidden'), 300); }
+            function showDesktopSidebar() { sidebar.classList.remove('hidden'); setTimeout(() => { sidebar.classList.remove('w-0'); sidebar.classList.add('md:w-64'); sidebarContent.classList.replace('opacity-0', 'opacity-100'); desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }, 10); }
+            mobileMenuBtn.addEventListener('click', () => navMenu.classList.toggle('hidden'));
+            desktopSidebarToggle.addEventListener('click', () => { if (sidebar.classList.contains('md:w-64')) hideDesktopSidebar(); else showDesktopSidebar(); });
+            if (sidebar.classList.contains('md:w-64')) { desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }
+
+            // --- NEW CUSTOMER PAGE LOGIC ---
+            const customerTableBody = document.getElementById('customer-table-body');
+            
+            const customers = [
+                { id: 1, name: 'John Doe', avatarUrl: 'https://i.pravatar.cc/150?u=john', email: 'john.doe@example.com', phone: '+1-202-555-0104', location: 'New York, USA', joinedDate: '2025-01-15', totalSpent: 1250.75, status: 'Active' },
+                { id: 2, name: 'Jane Smith', avatarUrl: 'https://i.pravatar.cc/150?u=jane', email: 'jane.smith@example.com', phone: '+1-303-555-0182', location: 'London, UK', joinedDate: '2025-02-20', totalSpent: 850.50, status: 'Active' },
+                { id: 3, name: 'Peter Jones', avatarUrl: 'https://i.pravatar.cc/150?u=peter', email: 'peter.jones@example.com', phone: '+1-404-555-0156', location: 'Sydney, AU', joinedDate: '2025-03-10', totalSpent: 2300.00, status: 'Inactive' },
+                { id: 4, name: 'Sara Lee', avatarUrl: 'https://i.pravatar.cc/150?u=sara', email: 'sara.lee@example.com', phone: '+1-505-555-0121', location: 'Toronto, CA', joinedDate: '2025-04-05', totalSpent: 450.00, status: 'Active' },
+                { id: 5, name: 'Mike Ross', avatarUrl: 'https://i.pravatar.cc/150?u=mike', email: 'mike.ross@example.com', phone: '+1-606-555-0199', location: 'Tokyo, JP', joinedDate: '2025-05-25', totalSpent: 3150.25, status: 'Active' },
+            ];
+
+            function getStatusClass(status) {
+                return status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+            }
+
+            function renderCustomers() {
+                customerTableBody.innerHTML = '';
+                customers.forEach(customer => {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-gray-200 hover:bg-gray-50';
+                    row.dataset.customerId = customer.id;
+
+                    row.innerHTML = `
+                        <td class="py-3 px-4">
+                            <div class="flex items-center">
+                                <img src="${customer.avatarUrl}" alt="${customer.name}" class="w-10 h-10 rounded-full object-cover mr-4">
+                                <span class="font-semibold">${customer.name}</span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div>${customer.email}</div>
+                            <div class="text-sm text-gray-500">${customer.phone}</div>
+                        </td>
+                        <td class="py-3 px-4">${customer.location}</td>
+                        <td class="py-3 px-4">${customer.joinedDate}</td>
+                        <td class="py-3 px-4">$${customer.totalSpent.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="py-1 px-3 rounded-full text-xs ${getStatusClass(customer.status)}">
+                                ${customer.status}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <div class="flex justify-center gap-2">
+                                <button class="text-blue-500 hover:text-blue-700" title="Edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <button class="text-red-500 hover:text-red-700" title="Delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    customerTableBody.appendChild(row);
+                });
+            }
+
+            // Initial Render
+            renderCustomers();
+        });
+    </script>
+
+{% endblock content %}
+

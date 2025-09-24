@@ -18,4 +18,7 @@ urlpatterns = [
     path('update/gallery-section-photo/', views.update_gallery_section_photo , name='update-gallery-section-photo'),
     path('delete/gallery-section-photo/', views.delete_gallery_section_photo , name='delete-gallery-section-photo'),
     path('update/product-details/', views.updateProductDetails , name='product-details'),
+    path('admin-dashboard/order/', views.order_dashboard , name='order-dashboard'),
+    path('admin-dashboard/users/', views.users_dashboard , name='users-dashboard'),
+    path('admin-dashboard/content/', views.content_dashboard , name='content-dashboard'),
 ]

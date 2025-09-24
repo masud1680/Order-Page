@@ -10,11 +10,12 @@
                 </div>
 
                 <nav id="nav-menu" class="hidden md:block mt-2 md:mt-8 md:flex-1">
-                    <a href="#" class="block py-2.5 px-6 bg-gray-700">Dashboard</a>
-                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Orders</a>
-                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Products</a>
-                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Customers</a>
-                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Settings</a>
+                    <a href="{% url 'admin-dashboard' %}" class="block py-2.5 px-6 bg-gray-700">Dashboard</a>
+                    <a href="{% url 'order-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Orders</a>
+                    <a href="{% url 'users-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Customers</a>
+                    <a href="{% url 'content-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Content</a>
+                    {% comment %} <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Products</a>
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Settings</a> {% endcomment %}
                 </nav>
             </div>
         </aside>

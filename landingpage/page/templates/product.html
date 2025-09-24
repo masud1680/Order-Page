@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Style for Button Animation -->
+    <style>
+        .sidebar-open-btn-transform {
+            transform: translateX(16rem); /* 16rem is the width of the sidebar (w-64) */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex flex-col md:flex-row h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-full md:w-64 bg-gray-800 text-white md:flex-shrink-0 transition-all duration-300 ease-in-out md:overflow-y-auto">
+            <div id="sidebar-content" class="h-full flex flex-col transition-opacity duration-200">
+                <div class="flex justify-between items-center p-6">
+                    <div class="text-2xl font-bold">AdminPanel</div>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+                <nav id="nav-menu" class="hidden md:block mt-2 md:mt-8 md:flex-1">
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Dashboard</a>
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Orders</a>
+                    <a href="#" class="block py-2.5 px-6 bg-gray-700">Products</a>
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Customers</a>
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Settings</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+            <button id="desktop-sidebar-toggle" class="hidden md:inline-flex fixed top-6 left-6 z-10 items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-transform duration-300 ease-in-out">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            
+            <!-- NEW: Product Management Content -->
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Manage Products</h1>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                    Add New Product
+                </button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- Product cards will be inserted here by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- SIDEBAR LOGIC (UNCHANGED) ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            function hideDesktopSidebar() { sidebar.classList.remove('md:w-64'); sidebar.classList.add('w-0'); sidebarContent.classList.replace('opacity-100', 'opacity-0'); desktopSidebarToggle.classList.remove('sidebar-open-btn-transform'); setTimeout(() => sidebar.classList.add('hidden'), 300); }
+            function showDesktopSidebar() { sidebar.classList.remove('hidden'); setTimeout(() => { sidebar.classList.remove('w-0'); sidebar.classList.add('md:w-64'); sidebarContent.classList.replace('opacity-0', 'opacity-100'); desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }, 10); }
+            mobileMenuBtn.addEventListener('click', () => navMenu.classList.toggle('hidden'));
+            desktopSidebarToggle.addEventListener('click', () => { if (sidebar.classList.contains('md:w-64')) hideDesktopSidebar(); else showDesktopSidebar(); });
+            if (sidebar.classList.contains('md:w-64')) { desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }
+
+            // --- NEW PRODUCT PAGE LOGIC ---
+            const productGrid = document.getElementById('product-grid');
+
+            const products = [
+                { id: 1, name: 'Wireless Mouse', description: 'A sleek and ergonomic wireless mouse with a long-lasting battery. Perfect for work and play.', price: 25.50, imageUrl: 'https://placehold.co/600x400/92c952/FFFFFF?text=Mouse' },
+                { id: 2, name: 'Mechanical Keyboard', description: 'RGB backlit mechanical keyboard with tactile switches for a satisfying typing experience.', price: 120.00, imageUrl: 'https://placehold.co/600x400/771796/FFFFFF?text=Keyboard' },
+                { id: 3, name: '4K Monitor', description: 'A stunning 27-inch 4K UHD monitor with vibrant colors and crisp details for professionals.', price: 450.75, imageUrl: 'https://placehold.co/600x400/24f355/FFFFFF?text=Monitor' },
+            ];
+
+            function renderProducts() {
+                productGrid.innerHTML = '';
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow-md overflow-hidden flex flex-col';
+                    card.dataset.productId = product.id;
+
+                    card.innerHTML = `
+                        <div class="relative">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover current-product-image">
+                            <input type="file" class="hidden image-upload-input" accept="image/*">
+                            <button class="absolute bottom-4 right-4 bg-gray-800 bg-opacity-70 text-white text-xs font-bold py-1 px-3 rounded-md hover:bg-opacity-90 change-image-btn">Change Image</button>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <input type="text" value="${product.name}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                
+                                <label class="block text-sm font-medium text-gray-700 mt-4">Description</label>
+                                <textarea class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 h-24">${product.description}</textarea>
+                                
+                                <label class="block text-sm font-medium text-gray-700 mt-4">Price</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="number" value="${product.price.toFixed(2)}" step="0.01" class="block w-full pl-7 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-4">
+                                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 save-changes-btn">Save Changes</button>
+                                <button class="w-auto bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 delete-product-btn">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+            }
+
+            // Event Delegation for product cards
+            productGrid.addEventListener('click', function(event) {
+                const target = event.target;
+                const card = target.closest('.bg-white');
+                if (!card) return;
+                
+                const productId = card.dataset.productId;
+
+                // Handle "Change Image" button click
+                if (target.classList.contains('change-image-btn')) {
+                    card.querySelector('.image-upload-input').click();
+                }
+
+                // Handle "Save Changes" button click
+                if (target.classList.contains('save-changes-btn')) {
+                    const newName = card.querySelector('input[type="text"]').value;
+                    const newPrice = card.querySelector('input[type="number"]').value;
+                    console.log(`Saving product ${productId}: Name=${newName}, Price=$${newPrice}`);
+                    // In a real app, you would send this data to a server.
+                    alert(`Product #${productId} saved!`);
+                }
+
+                // Handle "Delete" button click
+                if (target.classList.contains('delete-product-btn')) {
+                    console.log(`Deleting product ${productId}`);
+                    if (confirm(`Are you sure you want to delete product #${productId}?`)) {
+                        card.remove(); // Remove from UI
+                        // In a real app, you would send a delete request to a server.
+                    }
+                }
+            });
+
+            // Handle image preview when a new file is selected
+            productGrid.addEventListener('change', function(event){
+                const target = event.target;
+                if (target.classList.contains('image-upload-input') && target.files && target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const card = target.closest('.bg-white');
+                        card.querySelector('.current-product-image').src = e.target.result;
+                    }
+                    reader.readAsDataURL(target.files[0]);
+                }
+            });
+
+            // Initial Render
+            renderProducts();
+        });
+    </script>
+</body>
+</html>

@@ -15,14 +15,14 @@ class OrderModel(models.Model):
     statusChoice = [
         ('Pending','Pending'),
         ('Submit','Submit'),
-        ('Done','Done'),
-        ('Cancel', 'Cancel')
+        ('Completed','Completed'),
+        ('Cancle', 'Cancle')
     ]
-    status = models.CharField(choices=statusChoice, default="Pending" ,null=True)
+    status = models.CharField(choices=statusChoice, default="Pending" , null=True)
     
     locationChoice = [
-        ("ID" , "Inside Dhaka"),
-        ("OD" , "Outside Dhaka"),
+        ("Inside Dhaka" , "Inside Dhaka"),
+        ("Inside Dhaka" , "Outside Dhaka"),
     ]
     
     product_name = models.CharField(max_length=250, default='Nothing')
