@@ -13,10 +13,10 @@ class OrderModel(models.Model):
     quantity = models.CharField( default='Nothing')
     
     statusChoice = [
-        ('Pending','Pending'),
-        ('Submit','Submit'),
+        ('Processing','Processing'),
+        ('Submitted','Submitted'),
         ('Completed','Completed'),
-        ('Cancle', 'Cancle')
+        ('Cancelled', 'Cancelled')
     ]
     status = models.CharField(choices=statusChoice, default="Pending" , null=True)
     
@@ -42,8 +42,8 @@ class OrderModel(models.Model):
     
 
     
-    order_created_at = models.DateTimeField(auto_now= True)
-    order_updated_at = models.DateTimeField( auto_now_add=True)
+    order_created_at = models.DateTimeField( auto_now_add=True) # Set only once when created
+    order_updated_at = models.DateTimeField(auto_now= True)  # Update every time object is saved
     
     def __str__(self):
         return f'{self.name}'

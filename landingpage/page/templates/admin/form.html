@@ -1,40 +1,11 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Create Order</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+{% extends "admin/admin_dashboard.html" %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% block title %}Admin Create Order{% endblock title %}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% block content %}
 
-    <script>
-        // Custom Tailwind CSS Configuration
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans Bengali', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-purple': '#F0F2FF', // Main light purple background
-                        'brand-dark-purple': '#4C5FD5',
-                        'brand-green': '#28a745', // Green for buttons
-                        'brand-green-dark': '#218838',
-                        'dark-text': '#333333',
-                        'medium-text': '#555555',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body>
+            <h1 class="text-4xl font-bold text-gray-800 mb-8 ml-20">Admin Create Order</h1>
 <section id="order-form" class="bg-white p-8 ">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-dark-text">অর্ডার করতে নিচের ফর্মটি সঠিক ভাবে পূরণ করুন</h2>
@@ -294,8 +265,80 @@ function collectSpanValue(){
 
 
 };
+
+
+//-----------for side brand
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const addOrderBtn = document.getElementById('add-order-btn');
+            const orderListBody = document.getElementById('order-list-body');
+
+            
+            
+            
+        
+            
+            function hideDesktopSidebar() {
+                sidebar.classList.remove('md:w-64');
+                sidebar.classList.add('w-0');
+                sidebarContent.classList.replace('opacity-100', 'opacity-0');
+                desktopSidebarToggle.classList.remove('sidebar-open-btn-transform');
+                
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+            }
+
+            function showDesktopSidebar() {
+                sidebar.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    sidebar.classList.remove('w-0');
+                    sidebar.classList.add('md:w-64');
+                    sidebarContent.classList.replace('opacity-0', 'opacity-100');
+                    desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+                }, 10);
+            }
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            desktopSidebarToggle.addEventListener('click', () => {
+                const isVisible = sidebar.classList.contains('md:w-64');
+                if (isVisible) {
+                    hideDesktopSidebar();
+                } else {
+                    showDesktopSidebar();
+                }
+            });
+
+
+
+
+
+
+
+
+  
+
+            
+            if (sidebar.classList.contains('md:w-64')) {
+                desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+            }
+            renderOrders();
+            
+
+
+            
+        });
 </script>
 
-
-</body>
-</html>
+{% endblock content %}

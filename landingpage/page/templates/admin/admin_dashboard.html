@@ -5,11 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>{% block title %}Just Admin Dashboard{% endblock title %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .sidebar-open-btn-transform {
             transform: translateX(16rem); /* 16rem is the width of the sidebar (w-64) */
         }
     </style>
+
+    <script>
+        // Custom Tailwind CSS Configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Bengali', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-purple': '#F0F2FF', // Main light purple background
+                        'brand-dark-purple': '#4C5FD5',
+                        'brand-green': '#28a745', // Green for buttons
+                        'brand-green-dark': '#218838',
+                        'dark-text': '#333333',
+                        'medium-text': '#555555',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-100 font-sans">
 

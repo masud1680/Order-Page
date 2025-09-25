@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse,redirect
 from .models import OrderModel, FontSection, FeatureSection, ContactSection, GellerySection, Photo, ProductDetails
-from .forms import  PlaceOrderForm, FontSectionForm, FeatureSectionForm, ContactSectionForm, GellerySectionForm, PhotoSectionForm, ProductDetailsFrom
+from .forms import  AdminUpadteOrderForm, FontSectionForm, FeatureSectionForm, ContactSectionForm, GellerySectionForm, PhotoSectionForm, ProductDetailsFrom
 from django.db.models import Q, Count
 import datetime
 import json
@@ -188,25 +188,9 @@ def myorder_view(request):
         MyallOrder = OrderModel.objects.none()
     return render(request, 'myorder_view.html',{'MyallOrder' : MyallOrder})
     
-def order_create(request):
-    if request.method == 'POST':
-        form = PlaceOrderForm(request.POST)
-        if form.is_valid():
-            if request.user:
-                order = form.save(commit = False)
-                order.user = request.user
-                order.save()
-                return redirect('ordersuccess')
-                # return HttpResponse('order complete.')
-            else:
-                form.save()
-                return HttpResponse('order complete.')
-    else:
-        form = PlaceOrderForm()
-    
-    return render(request, 'order_page.html', {'form' : form})
 
-def order_create_landing_page(request):
+
+def order_create_admin_dashboard(request):
     
     # collect data from django template
     if request.method == 'POST':
@@ -282,9 +266,9 @@ def all_count():
     counts = OrderModel.objects.aggregate(
      total_orders = Count('id', distinct=True),
      today_orders = Count('id', filter=Q(order_created_at__range=(start_of_day,end_of_day)), distinct=True),
-     submit_orders = Count('id',  filter=Q(status = "Submit" )) ,
+     submit_orders = Count('id',  filter=Q(status = "Submitted" )) ,
      complete_orders = Count('id',  filter=Q(status = "Completed")),
-     cancle_orders = Count('id',  filter=Q(status = "Cancle")), 
+     cancle_orders = Count('id',  filter=Q(status = "Cancelled")), 
     )
     
     
@@ -304,7 +288,8 @@ def admin_dashboard(request):
     # last 3 days orders show
     now = timezone.now()
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    end_of_day = start_of_day + timedelta(days=3)
+    end_of_day = start_of_day + timedelta(days=1)
+    
     
     # query
     orders = OrderModel.objects.filter(order_created_at__range=(start_of_day,end_of_day))
@@ -323,7 +308,7 @@ def admin_dashboard(request):
         }
         orders_list.append(orderData)
         
-    # print(orders_list)
+    #print(orders_list)
     
     
     
@@ -370,6 +355,29 @@ def order_dashboard(request):
     }
     
     return render(request, 'admin/order_dashboard.html', context)
+
+
+def order_update(request, order_id):
+    # get spacific order ditels
+    order = OrderModel.objects.get(id = order_id)
+    
+    if request.method == 'POST':
+        form = AdminUpadteOrderForm(request.POST, instance=order)
+        if form.is_valid():
+            if request.user:
+                order = form.save(commit = False)
+                order.user = request.user
+                order.save()
+                return redirect('order-dashboard')
+                # return HttpResponse('order complete.')
+            else:
+                form.save()
+                return HttpResponse('order complete.')
+    else:
+        form = AdminUpadteOrderForm(instance=order)
+    
+    return render(request, 'order_page.html', {'form' : form})
+
 
 def users_dashboard(request):
     

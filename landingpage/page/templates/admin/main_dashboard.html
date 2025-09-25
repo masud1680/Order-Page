@@ -59,8 +59,8 @@
 
 <script>
      // Load all orders from Django context
-    const ordersData = JSON.parse('{{ orders_json|escapejs }}');
-
+    let ordersData = JSON.parse('{{ orders_json|escapejs }}');
+    //console.log(ordersData);
         document.addEventListener('DOMContentLoaded', function () {
             // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
             const sidebar = document.getElementById('sidebar');
@@ -73,6 +73,8 @@
 
             
             let orders = ordersData;
+            
+            //console.log(orders);
             
             function hideDesktopSidebar() {
                 sidebar.classList.remove('md:w-64');
@@ -116,6 +118,7 @@
             function renderOrders() {
                 orderListBody.innerHTML = '';
                 orders.slice().reverse().forEach(order => {
+                    //console.log(order);
                     orderListBody.appendChild(renderOrderRow(order));
                 });
             }
@@ -135,10 +138,11 @@
                 row.className = 'border-b border-gray-200 hover:bg-gray-50';
                 let statusClass = '';
                 switch (order.status) {
-                    case 'Pending': return 'bg-gray-100 text-gray-800';
                     case 'Completed': statusClass = 'bg-green-100 text-green-800'; break;
                     case 'Submitted': statusClass = 'bg-yellow-100 text-yellow-800'; break;
                     case 'Cancelled': statusClass = 'bg-red-100 text-red-800'; break;
+                    case 'Processing': statusClass = 'bg-gray-100 text-gray-800' ;
+                    
                 }
                 row.innerHTML = `<td class="py-3 px-6 font-medium">#${order.id}</td><td class="py-3 px-6">${order.product}</td><td class="py-3 px-6">${order.customer}</td><td class="py-3 px-6">${order.date}</td><td class="py-3 px-6"><span class="py-1 px-3 rounded-full text-xs ${statusClass}">${order.status}</span></td>`;
                 return row;
@@ -148,7 +152,7 @@
                 desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
             }
             renderOrders();
-            updateStats();
+            
 
 
             

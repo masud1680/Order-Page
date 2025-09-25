@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     path('test/', views.test_template, name='test'),
-    path('order-create', views.order_create_landing_page, name='order-create'),
     path('product-details/', views.product_details, name='product-details'),
     path('landing-page/', views.landing_page, name='landing-page'),
     path('myorder-view/', views.myorder_view, name='myorder-view'),
@@ -11,6 +10,8 @@ urlpatterns = [
     
     # Admin Dashboard spacific Url
     path('admin-dashboard/', views.admin_dashboard , name='admin-dashboard'),
+    path('admin-dashboard/order-create', views.order_create_admin_dashboard, name='order-create'),
+    path('admin-dashboard/order-update/<int:order_id>', views.order_update, name='order-update'),
     path('update/font-section/', views.update_font_section, name='update-font-section'),
     path('update/feature-section/', views.update_feature_section , name='update-feature-section'),
     path('update/contact-section/', views.update_contact_section , name='update-contact-section'),

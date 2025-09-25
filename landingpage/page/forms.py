@@ -2,12 +2,16 @@ from django import forms
 from .models import OrderModel, FontSection, FeatureSection, ContactSection, GellerySection, Photo, ProductDetails
 from django.forms import modelformset_factory
 
-class PlaceOrderForm(forms.ModelForm):
+class AdminUpadteOrderForm(forms.ModelForm):
     class Meta:
         model = OrderModel
-        fields = ['name','phone','address', 'quantity', 'location_choice', 'payment_method']
+        fields = ['status','name','phone','address','comment','product_name', 'quantity', 'price', 'total_price', 'delivery_charge',  'location_choice', 'payment_method']
         widgets = {
             'name': forms.TextInput(attrs={
+                'class': 'block w-full rounded-md p-3 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md',
+                'placeholder': 'Enter your name'
+            }),
+            'product_name': forms.TextInput(attrs={
                 'class': 'block w-full rounded-md p-3 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md',
                 'placeholder': 'Enter your name'
             }),
@@ -20,10 +24,27 @@ class PlaceOrderForm(forms.ModelForm):
                 'rows': 3,
                 'placeholder': 'Enter your address'
             }),
+            'comment': forms.Textarea(attrs={
+                'class': 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md',
+                'rows': 3,
+                'placeholder': 'Enter your address'
+            }),
             'quantity': forms.TextInput(attrs={
                 'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
             }),
+            'price': forms.TextInput(attrs={
+                'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
+            }),
+            'total_price': forms.TextInput(attrs={
+                'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
+            }),
+            'delivery_charge': forms.TextInput(attrs={
+                'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
+            }),
             'location_choice': forms.Select(attrs={
+                'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
+            }),
+            'status': forms.Select(attrs={
                 'class': 'block w-full p-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-md'
             }),
             'payment_method': forms.Select(attrs={
