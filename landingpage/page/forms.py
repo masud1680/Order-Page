@@ -53,15 +53,40 @@ class AdminUpadteOrderForm(forms.ModelForm):
         }
         
 
-class FontSectionForm(forms.ModelForm):
+# class FontSectionForm(forms.ModelForm):
+#     class Meta:
+#         model = FontSection
+#         fields = ['name', 'small_title', 'big_title', 'font_asset', 'details']
+
+# forms/mixins.py
+class TailwindFormMixin:
+    """
+    Apply Tailwind classes to all fields in a form automatically.
+    """
+    tailwind_class = "block w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition duration-200"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            # Add the tailwind class to all widgets
+            existing_class = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = f"{existing_class} {self.tailwind_class}".strip()
+
+
+class FontSectionForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = FontSection
-        fields = ['name', 'small_title', 'big_title', 'font_asset', 'details']
+        fields = ['font_asset']
+        widgets = {
+            'font_asset': forms.ClearableFileInput(attrs={
+                'class': 'file:py-2 file:px-4 file:border-0 file:rounded-lg file:text-sm file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200',
+            }),
+        }
         
 class FeatureSectionForm(forms.ModelForm):
     class Meta:
         model = FeatureSection
-        fields = [ 'features_name']
+        fields = ['name', 'first_title', 'features_name', 'second_title', 'benefits_name']
         
 class ContactSectionForm(forms.ModelForm):
     class Meta:
@@ -73,7 +98,7 @@ class GellerySectionForm(forms.ModelForm):
         model = GellerySection
         fields = ['title', 'description']
         
-class PhotoSectionForm(forms.ModelForm):
+class PhotoSectionForm(TailwindFormMixin,forms.ModelForm):
     class Meta:
         model = Photo
         fields = ['name', 'photo_asset']

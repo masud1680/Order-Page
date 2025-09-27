@@ -88,15 +88,15 @@ def landing_page(request):
     return render(request, 'landing_page/landing_page.html', context)
 
 def update_font_section(request):
-    # FontSectionDetails = FontSection.objects.get(id = 1)
-    form = FontSectionForm() #(instance=FontSectionDetails)
+    FontSectionDetails = FontSection.objects.get(id = 1)
+    form = FontSectionForm(instance=FontSectionDetails) #(instance=FontSectionDetails)
     if request.method == 'POST':
-        form = FontSectionForm(request.POST, request.FILES,)
+        form = FontSectionForm(request.POST, request.FILES,instance=FontSectionDetails)
         if form.is_valid():
+            print(FontSectionDetails.font_asset)
             form.save()
-            return redirect('landing-page')
-        
-    return render(request, 'form.html', {'form' : form})
+            return redirect('content-dashboard')    
+    return render(request, 'admin/photo_form.html', {'form' : form})
     
 def update_feature_section(request):
     FeatureSectionDetails = FeatureSection.objects.get(id = 1)
@@ -107,7 +107,7 @@ def update_feature_section(request):
             form.save()
             return redirect('landing-page')
         
-    return render(request, 'test_template.html', {'form' : form})
+    return render(request, 'admin/photo_form.html', {'form' : form})
   
 def update_contact_section(request):
     ContactSectionDetails = ContactSection.objects.get(id = 1)
@@ -118,7 +118,7 @@ def update_contact_section(request):
             form.save()
             return redirect('landing-page')
         
-    return render(request, 'admin/form.html', {'form' : form})
+    return render(request, 'admin/photo_form.html', {'form' : form})
     
 def update_gallery_section_data(request):
     GellerySectionDetails = GellerySection.objects.get(id = 1)
@@ -134,7 +134,7 @@ def update_gallery_section_data(request):
                     
             return redirect('landing-page')
      
-    return render(request, 'admin/form.html', {'form' : form} )
+    return render(request, 'admin/photo_form.html', {'form' : form} )
     
 def update_gallery_section_photo(request):
     GellerySectionDetails = GellerySection.objects.get(id = 1)
@@ -149,9 +149,9 @@ def update_gallery_section_photo(request):
             # print(form)
             gallery = form.save()
             GellerySectionDetails.photos.add(gallery)        
-            # return redirect('landing-page')
+            return redirect('content-dashboard')
     
-    return render(request, 'admin/form.html',  {'form' : form}  )
+    return render(request, 'admin/photo_form.html',  {'form' : form}  )
 
 def delete_gallery_section_photo(request):
     GellerySectionDetails = GellerySection.objects.prefetch_related('photos').get(id = 1)
@@ -386,6 +386,8 @@ def users_dashboard(request):
     
     return render(request, 'admin/users.html')
 
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt 
 def content_dashboard(request):
 
     
@@ -393,7 +395,8 @@ def content_dashboard(request):
     font = get_object_or_404(FontSection, pk=1)
     feature = get_object_or_404(FeatureSection, pk=1)
     contact = get_object_or_404(ContactSection, pk=1)
-    gallery = GellerySection.objects.prefetch_related('photos').get(id = 1) 
+    gallery = get_object_or_404(GellerySection, pk=1)
+    galleryImg = GellerySection.objects.prefetch_related('photos').get(id = 1) 
     product = get_object_or_404(ProductDetails, pk=1)
     
     # recived data from fontand send to database
@@ -406,6 +409,8 @@ def content_dashboard(request):
             font.small_title = font_data.get("small_title", font.small_title)
             font.big_title = font_data.get("big_title", font.big_title)
             font.details = font_data.get("details", font.details)
+            font.font_asset = font_data.get("font_asset", font.font_asset)
+            # print(font_asset)
             
             #--- feature section ---
             feature_data = recivedJsonData.get("featureSection",{})
@@ -427,11 +432,17 @@ def content_dashboard(request):
             product.insideDhaka = productDetails_data.get("insideDhaka", product.insideDhaka)
             product.outsideDhaka = productDetails_data.get("outsideDhaka", product.outsideDhaka)
             
+            #--- Gallery section
+            galleryDetails_data = recivedJsonData.get("gellerySection",{})
+            gallery.title = galleryDetails_data.get("title", gallery.title)
+            gallery.description = galleryDetails_data.get("description", gallery.description)
+            
             #---save every section----
             font.save()
             feature.save()
             contact.save()
             product.save()
+            gallery.save()
             
             
             return JsonResponse({"received_back": recivedJsonData}) # working for print data in console log
@@ -443,7 +454,7 @@ def content_dashboard(request):
     
     # make a dichonary in list for json gallery photos data
     photos = []
-    for ph in gallery.photos.all():
+    for ph in galleryImg.photos.all():
         
         photo = {
                     "id":ph.id, 
