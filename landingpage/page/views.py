@@ -1,9 +1,10 @@
-from django.shortcuts import render, HttpResponse,redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from .models import OrderModel, FontSection, FeatureSection, ContactSection, GellerySection, Photo, ProductDetails
 from .forms import  AdminUpadteOrderForm, FontSectionForm, FeatureSectionForm, ContactSectionForm, GellerySectionForm, PhotoSectionForm, ProductDetailsFrom
 from django.db.models import Q, Count
 import datetime
-import json
+import json # send html js section json data
+from django.http import JsonResponse # recived html js section json data
 
 
 # Create your views here.
@@ -106,7 +107,7 @@ def update_feature_section(request):
             form.save()
             return redirect('landing-page')
         
-    return render(request, 'form.html', {'form' : form})
+    return render(request, 'test_template.html', {'form' : form})
   
 def update_contact_section(request):
     ContactSectionDetails = ContactSection.objects.get(id = 1)
@@ -176,6 +177,7 @@ def updateProductDetails(request):
             form.save()
         return HttpResponse("Update successfull.") 
     return render(request, "admin/form.html", {"form" : form})   
+
 
 
 def myorder_view(request):
@@ -385,9 +387,110 @@ def users_dashboard(request):
     return render(request, 'admin/users.html')
 
 def content_dashboard(request):
+
+    
+    # get data from database send to fontand
+    font = get_object_or_404(FontSection, pk=1)
+    feature = get_object_or_404(FeatureSection, pk=1)
+    contact = get_object_or_404(ContactSection, pk=1)
+    gallery = GellerySection.objects.prefetch_related('photos').get(id = 1) 
+    product = get_object_or_404(ProductDetails, pk=1)
+    
+    # recived data from fontand send to database
+    if request.method == "POST":
+        try:
+            recivedJsonData = json.loads(request.body)
+        
+            #-- font section---
+            font_data = recivedJsonData.get("fontSection", {})
+            font.small_title = font_data.get("small_title", font.small_title)
+            font.big_title = font_data.get("big_title", font.big_title)
+            font.details = font_data.get("details", font.details)
+            
+            #--- feature section ---
+            feature_data = recivedJsonData.get("featureSection",{})
+            feature.first_title = feature_data.get("first_title", feature.first_title)
+            feature.features_name = feature_data.get("features_name", feature.features_name)
+            feature.second_title = feature_data.get("second_title", feature.second_title)
+            feature.benefits_name = feature_data.get("benefits_name", feature.benefits_name)
+            
+            # --contact section--
+            contact_data = recivedJsonData.get("contactSection",{})
+            contact.title = contact_data.get("title", contact.title)
+            contact.number = contact_data.get("number", contact.number)
+            
+            #--- product Section --
+            productDetails_data = recivedJsonData.get("productDetails",{})
+            product.name = productDetails_data.get("name", product.name)
+            product.quantity = productDetails_data.get("quantity", product.quantity)
+            product.price = productDetails_data.get("price", product.price)
+            product.insideDhaka = productDetails_data.get("insideDhaka", product.insideDhaka)
+            product.outsideDhaka = productDetails_data.get("outsideDhaka", product.outsideDhaka)
+            
+            #---save every section----
+            font.save()
+            feature.save()
+            contact.save()
+            product.save()
+            
+            
+            return JsonResponse({"received_back": recivedJsonData}) # working for print data in console log
+        except Exception as e:
+            return JsonResponse({"error" : str(e)}, status=500)
+        
+    # return JsonResponse({"error": "Invalid request"}, status=400) # if method is not post the show this error
     
     
-    return render(request, 'admin/content.html')
+    # make a dichonary in list for json gallery photos data
+    photos = []
+    for ph in gallery.photos.all():
+        
+        photo = {
+                    "id":ph.id, 
+                    "name": ph.name, 
+                    "photo_asset": ph.photo_asset
+                }
+        photos.append(photo)
+        
+    
+    
+    # Sample data simulating what's in your database
+    jsonSiteData = {
+            "fontSection": { 
+                            "small_title": font.small_title, 
+                            "big_title": font.big_title, 
+                            "font_asset": font.font_asset, 
+                            "details": font.details, 
+                            },
+            "featureSection":{ 
+                                "first_title": feature.first_title, 
+                                "features_name": feature.features_name, 
+                                "second_title": feature.second_title, 
+                                "benefits_name": feature.benefits_name 
+                            },
+            "gellerySection":{ 
+                                "title": gallery.title, 
+                                "description": gallery.description, 
+                                "photos":photos 
+                            },
+            "productDetails":{ 
+                                "name": product.name, 
+                                "quantity": product.quantity, 
+                                "price": product.price, 
+                                "insideDhaka": product.insideDhaka, 
+                                "outsideDhaka": product.outsideDhaka 
+                            },
+            "contactSection":{ 
+                                "title": contact.title, 
+                                "number": contact.number 
+                            }
+    }
+    
+    context ={
+        "jsonSiteData_json": json.dumps(jsonSiteData, default=str),  # convert datetime to string
+    }
+    
+    return render(request, 'admin/content.html', context)
 
 from django.contrib.auth.models import User
 def test_template(request):

@@ -1,6 +1,6 @@
 {% extends "admin/admin_dashboard.html" %}
 
-{% block title %}Content{% endblock title %}
+{% block title %}Content Update{% endblock title %}
 
 {% block content %}
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -83,6 +83,30 @@
 
 
     <script>
+             // Load all orders from Django context
+    let jsonSiteData = JSON.parse('{{ jsonSiteData_json|escapejs }}');
+    console.log(jsonSiteData);
+
+        // Example: send it back to Django
+    function sendBack(updatedData) {
+        fetch("{% url 'content-dashboard' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: JSON.stringify(updatedData)  // sending Django variable back
+        })
+        .then(res => res.json())
+        .then(result => {
+            console.log("Django response:", result);
+        });
+    }
+
+    
+
+
+// template working section
         document.addEventListener('DOMContentLoaded', function () {
             // --- SIDEBAR LOGIC (UNCHANGED) ---
             const sidebar = document.getElementById('sidebar'); /* ... and so on */
@@ -104,13 +128,14 @@
             // --- NEW CONTENT PAGE LOGIC ---
             
             // Sample data simulating what's in your database
-            const siteData = {
-                fontSection: { small_title: 'Premium Quality', big_title: 'Unique & Stylish Fonts', font_asset: 'https://placehold.co/800x400/92c952/FFFFFF?text=Font+Asset', details: 'Discover our collection of handcrafted fonts that bring personality and elegance to your projects.' },
-                featureSection: { first_title: 'Our Features', features_name: ['Easy to Install', 'Multi-Language Support', 'Commercial License Included'], second_title: 'Your Benefits', benefits_name: ['Save Time', 'Reach a Global Audience', 'Use on Unlimited Projects'] },
-                gellerySection: { title: 'Our Font Gallery', description: 'See our fonts in action in these beautiful designs.', photos: [{id:1, name: 'gallery1', photo_asset: 'https://placehold.co/400x400/771796/FFFFFF?text=1'}, {id:2, name: 'gallery2', photo_asset: 'https://placehold.co/400x400/24f355/FFFFFF?text=2'}, {id:3, name: 'gallery3', photo_asset: 'https://placehold.co/400x400/d32776/FFFFFF?text=3'}] },
-                productDetails: { name: 'Premium Font Pack', quantity: 1, price: 49, insideDhaka: 5, outsideDhaka: 10 },
-                contactSection: { title: 'Have a question?', number: '+880 1234 567890' }
-            };
+            const siteData = jsonSiteData;
+            //{
+               // fontSection: { small_title: 'Premium Quality', big_title: 'Unique & Stylish Fonts', font_asset: 'https://placehold.co/800x400/92c952/FFFFFF?text=Font+Asset', details: 'Discover our collection of handcrafted fonts that bring personality and elegance to your projects.' },
+               // featureSection: { first_title: 'Our Features', features_name: ['Easy to Install', 'Multi-Language Support', 'Commercial License Included'], second_title: 'Your Benefits', benefits_name: ['Save Time', 'Reach a Global Audience', 'Use on Unlimited Projects'] },
+               // gellerySection: { title: 'Our Font Gallery', description: 'See our fonts in action in these beautiful designs.', photos: [{id:1, name: 'gallery1', photo_asset: 'https://placehold.co/400x400/771796/FFFFFF?text=1'}, {id:2, name: 'gallery2', photo_asset: 'https://placehold.co/400x400/24f355/FFFFFF?text=2'}, {id:3, name: 'gallery3', photo_asset: 'https://placehold.co/400x400/d32776/FFFFFF?text=3'}] },
+               // productDetails: { name: 'Premium Font Pack', quantity: 1, price: 49, insideDhaka: 5, outsideDhaka: 10 },
+               // contactSection: { title: 'Have a question?', number: '+880 1234 567890' }
+            //};
 
             // Get all input elements
             const inputs = {
@@ -139,7 +164,7 @@
                 inputs.fontSmallTitle.value = siteData.fontSection.small_title;
                 inputs.fontBigTitle.value = siteData.fontSection.big_title;
                 inputs.fontDetails.value = siteData.fontSection.details;
-                inputs.fontAssetPreview.src = siteData.fontSection.font_asset;
+                inputs.fontAssetPreview.src = `/media/${siteData.fontSection.font_asset}`;
                 inputs.featureFirstTitle.value = siteData.featureSection.first_title;
                 inputs.featureList.value = siteData.featureSection.features_name.join('\n');
                 inputs.featureSecondTitle.value = siteData.featureSection.second_title;
@@ -163,8 +188,9 @@
                  const imgContainer = document.createElement('div');
                 imgContainer.className = 'relative group';
                 imgContainer.dataset.photoId = id;
-                imgContainer.innerHTML = `<img src="${src}" class="w-full h-24 object-cover rounded-md"><button class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity gallery-delete-btn">&times;</button>`;
+                imgContainer.innerHTML = `<img src="/media/${src}" class="w-full h-24 object-cover rounded-md"><button class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity gallery-delete-btn">&times;</button>`;
                 inputs.galleryGrid.appendChild(imgContainer);
+                //console.log(src);
             }
 
             // --- EVENT LISTENERS ---
@@ -172,10 +198,23 @@
                 // In a real app, you would gather all data and send to your server
                 alert("Changes Published! (Check the browser console to see the data object).");
                 const updatedData = {
-                    fontSection: { small_title: inputs.fontSmallTitle.value, big_title: inputs.fontBigTitle.value, /* etc. */ },
-                    featureSection: { features_name: inputs.featureList.value.split('\n').filter(Boolean), benefits_name: inputs.benefitList.value.split('\n').filter(Boolean), /* etc. */ }
+                    fontSection: { small_title: inputs.fontSmallTitle.value, big_title: inputs.fontBigTitle.value, details: inputs.fontDetails.value /* etc. */ },
+                    featureSection: {first_title:inputs.featureFirstTitle.value, features_name: inputs.featureList.value.split('\n').filter(Boolean),second_title:inputs.featureSecondTitle.value, benefits_name: inputs.benefitList.value.split('\n').filter(Boolean), /* etc. */ },
+                    contactSection:{ 
+                                "title": inputs.contactTitle.value, 
+                                "number": inputs.contactNumber.value 
+                            },
+                    productDetails:{ 
+                                "name": inputs.productName.value, 
+                                "quantity": inputs.productQuantity.value, 
+                                "price": inputs.productPrice.value, 
+                                "insideDhaka": inputs.productInsideDhaka.value, 
+                                "outsideDhaka": inputs.productOutsideDhaka.value 
+                            },
                 };
                 console.log("Saving updated data:", updatedData);
+                sendBack(updatedData);
+
             });
 
             document.getElementById('discard-changes-btn').addEventListener('click', () => {
@@ -198,6 +237,8 @@
             // Initial population
             populateForms();
         });
+
+        
     </script>
 
 {% endblock content %}

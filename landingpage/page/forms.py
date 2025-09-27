@@ -61,7 +61,7 @@ class FontSectionForm(forms.ModelForm):
 class FeatureSectionForm(forms.ModelForm):
     class Meta:
         model = FeatureSection
-        fields = ['name', 'first_title', 'features_name', 'second_title', 'benefits_name']
+        fields = [ 'features_name']
         
 class ContactSectionForm(forms.ModelForm):
     class Meta:

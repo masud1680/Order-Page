@@ -18,7 +18,7 @@ class OrderModel(models.Model):
         ('Completed','Completed'),
         ('Cancelled', 'Cancelled')
     ]
-    status = models.CharField(choices=statusChoice, default="Pending" , null=True)
+    status = models.CharField(choices=statusChoice, default="Processing" , null=True)
     
     locationChoice = [
         ("Inside Dhaka" , "Inside Dhaka"),
