@@ -58,7 +58,8 @@ class AdminUpadteOrderForm(forms.ModelForm):
 #         model = FontSection
 #         fields = ['name', 'small_title', 'big_title', 'font_asset', 'details']
 
-# forms/mixins.py
+
+
 class TailwindFormMixin:
     """
     Apply Tailwind classes to all fields in a form automatically.
@@ -102,6 +103,7 @@ class PhotoSectionForm(TailwindFormMixin,forms.ModelForm):
     class Meta:
         model = Photo
         fields = ['name', 'photo_asset']
+
     
 class ProductDetailsFrom(forms.ModelForm):
     class Meta:

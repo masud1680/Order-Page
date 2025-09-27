@@ -287,7 +287,7 @@
 <script>
                // Load all orders from Django context
       let jsonSiteData = JSON.parse('{{ jsonSiteData_json|escapejs }}');
-      console.log(jsonSiteData);
+      //console.log(jsonSiteData);
 
           // Example: send it back to Django
       function sendBack(updatedData) {
@@ -401,6 +401,9 @@
                   //console.log(src);
               }
 
+            // gellery each photo deleted id's list
+              let deleteImgList = [];
+
               // --- EVENT LISTENERS ---
               document.getElementById('publish-changes-btn').addEventListener('click', () => {
                   // In a real app, you would gather all data and send to your server
@@ -423,9 +426,12 @@
                         gellerySection:{
                                   "title":inputs.galleryTitle.value,
                                   "description":inputs.galleryDescription.value
-                        }
+                        },
+                        deleteImg: deleteImgList
+                        
                   };
-                  console.log("Saving updated data:", updatedData);
+                  
+                  //console.log("Saving updated data:", updatedData);
                   sendBack(updatedData);
 
               });
@@ -440,10 +446,19 @@
               //    for(const file of this.files) { addImageToGalleryPreview(URL.createObjectURL(file), 'new'); };
               //});
 
+
+
+              
+              
               // Gallery delete handler
               inputs.galleryGrid.addEventListener('click', function(e){
                   if(e.target.classList.contains('gallery-delete-btn')) {
+                        // Find the parent div that has data-photo-id
+                        const photoId = e.target.parentElement.closest('div').dataset.photoId;
+                        //console.log("Photo ID:", photoId);
+                        deleteImgList.push(photoId)
                       e.target.parentElement.remove();
+                      //console.log(deleteImgList);
                   };
               });
 

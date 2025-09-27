@@ -444,8 +444,19 @@ def content_dashboard(request):
             product.save()
             gallery.save()
             
+            # delete selected image           
+            deleteImgList = recivedJsonData.get("deleteImg")
+            if deleteImgList:
+                for delImgId in deleteImgList:
+                    getDelImg = galleryImg.photos.get(id = delImgId)
+                    print(getDelImg)
+                    getDelImg.delete()
+                            
+                    
+   
             
-            return JsonResponse({"received_back": recivedJsonData}) # working for print data in console log
+            
+            # return JsonResponse({"received_back": recivedJsonData}) # working for print data in console log
         except Exception as e:
             return JsonResponse({"error" : str(e)}, status=500)
         
