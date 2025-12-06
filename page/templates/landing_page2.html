@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হেলদি স্পাইস মিক্স - হোমপেজ</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        // Custom Tailwind CSS Configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Bengali', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4CAF50', // Main Green
+                        'primary-dark': '#388E3C',
+                        'primary-light': '#E8F5E9',
+                        secondary: '#FFC107', // Accent Amber/Yellow
+                        dark: '#212121', // Dark Text
+                        medium: '#616161', // Medium Text
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Simple animation for the hero image */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-dark">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary">
+                GISTOS
+            </a>
+            <a href="#order-form" class="bg-primary text-white font-bold py-2 px-6 rounded-full hover:bg-primary-dark transition duration-300">
+                অর্ডার করুন
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="bg-primary-light py-16 md:py-20">
+            <div class="container mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-dark leading-tight mb-4">
+                        স্বাদ আর পুষ্টিতে সুপারিয়রতা
+                    </h1>
+                    <p class="text-lg text-medium mb-8">
+                        আপনার রান্নার স্বাদকে দিন এক নতুন মাত্রা, স্বাস্থ্যকর উপাদানের ছোঁয়ায়।
+                    </p>
+                    <a href="#order-form" class="inline-block bg-primary text-white font-bold py-3 px-10 rounded-full text-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105">
+                        এখনি অর্ডার করুন
+                    </a>
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://i.imgur.com/gK5L3k1.png" alt="হেলদি স্পাইস মিক্সের দুটি জার" class="max-w-sm md:max-w-md w-full animate-float">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-primary-dark text-white py-4">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="font-semibold">১০০% বিশুদ্ধ</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fas fa-leaf"></i>
+                        <span class="font-semibold">প্রাকৃতিক উপাদান</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fas fa-truck-fast"></i>
+                        <span class="font-semibold">সারা দেশে ডেলিভারি</span>
+                    </div>
+                     <div class="flex items-center justify-center gap-2">
+                        <i class="fas fa-hand-holding-dollar"></i>
+                        <span class="font-semibold">ক্যাশ অন ডেলিভারি</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-16 md:py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">হেলদি স্পাইস মিক্স <span class="text-primary">কেন খাবেন?</span></h2>
+                <p class="text-medium max-w-2xl mx-auto mb-12">আমাদের স্পাইস মিক্স শুধু স্বাদই বাড়ায় না, আপনার স্বাস্থ্যেরও যত্ন নেয়।</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-8">
+                    <div class="space-y-8 text-center md:text-right">
+                        <div class="feature-item">
+                            <h3 class="font-bold text-lg mb-1">হজমে সহায়তা করে</h3>
+                            <p class="text-medium text-sm">প্রাকৃতিক উপাদান পেট ঠান্ডা রাখে এবং হজমশক্তি বাড়াতে সাহায্য করে।</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3 class="font-bold text-lg mb-1">রোগ প্রতিরোধ ক্ষমতা বাড়ায়</h3>
+                            <p class="text-medium text-sm">বিভিন্ন মশলার প্রাকৃতিক গুণাবলী শরীরকে রোগের বিরুদ্ধে লড়তে সাহায্য করে।</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <img src="https://i.imgur.com/mYnC5gr.png" alt="মশলার জার" class="max-w-xs w-full">
+                    </div>
+                    
+                    <div class="space-y-8 text-center md:text-left">
+                        <div class="feature-item">
+                            <h3 class="font-bold text-lg mb-1">সম্পূর্ণ প্রাকৃতিক উপাদান</h3>
+                            <p class="text-medium text-sm">কোনো রকম কৃত্রিম রঙ বা প্রিজারভেটিভ ছাড়াই তৈরি।</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3 class="font-bold text-lg mb-1">রান্নার স্বাদ বাড়ায়</h3>
+                            <p class="text-medium text-sm">যেকোনো সাধারণ রান্নাকে করে তোলে অসাধারণ সুস্বাদু।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-primary-light py-16 md:py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">উপাদান সমূহ</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
+                    <div class="flex flex-col items-center">
+                        <img src="https://i.imgur.com/5uLpSih.png" alt="বাদাম" class="w-24 h-24 object-contain mb-2">
+                        <h3 class="font-semibold">চিনাবাদাম</h3>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://i.imgur.com/dK3f0wT.png" alt="এলাচ" class="w-24 h-24 object-contain mb-2">
+                        <h3 class="font-semibold">এলাচ</h3>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://i.imgur.com/w9zW5sK.png" alt="জিরা" class="w-24 h-24 object-contain mb-2">
+                        <h3 class="font-semibold">সাদা জিরা</h3>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://i.imgur.com/GjT8p0p.png" alt="আদা" class="w-24 h-24 object-contain mb-2">
+                        <h3 class="font-semibold">আদা</h3>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://i.imgur.com/VzQ4uQj.png" alt="রসুন" class="w-24 h-24 object-contain mb-2">
+                        <h3 class="font-semibold">রসুন</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded-r-lg">
+                        <h3 class="text-2xl font-bold mb-4">সাধারণ স্পাইস মিক্স</h3>
+                        <ul class="space-y-3 text-medium">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-times-circle text-red-500 mt-1"></i>
+                                <span>কৃত্রিম রঙ ও ফ্লেভার যুক্ত যা স্বাস্থ্যের জন্য ক্ষতিকর।</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-times-circle text-red-500 mt-1"></i>
+                                <span>অস্বাস্থ্যকর পরিবেশে তৈরি এবং ভেজালযুক্ত।</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-times-circle text-red-500 mt-1"></i>
+                                <span>পুষ্টিগুণের অভাব এবং স্বাদের তারতম্য।</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-100 border-l-4 border-primary p-6 rounded-r-lg">
+                         <h3 class="text-2xl font-bold mb-4">আমাদের হেলদি স্পাইস মিক্স</h3>
+                        <ul class="space-y-3 text-medium">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-primary mt-1"></i>
+                                <span>সম্পূর্ণ প্রাকৃতিক উপাদানে তৈরি, কোনো কৃত্রিম উপাদান নেই।</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-primary mt-1"></i>
+                                <span>নিজস্ব তত্ত্বাবধানে স্বাস্থ্যকর পরিবেশে প্রক্রিয়াজাত।</span>
+                            </li>
+                             <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle text-primary mt-1"></i>
+                                <span>সঠিক পুষ্টিগুণ এবং অসাধারণ স্বাদ নিশ্চিত করে।</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="order-form" class="py-16 md:py-20 bg-primary-light">
+            <div class="container mx-auto px-4">
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+                    <h2 class="text-3xl font-bold text-center mb-2">অর্ডার করতে ফর্মটি পূরণ করুন</h2>
+                    <p class="text-center text-medium mb-8">আমাদের প্রতিনিধি খুব দ্রুত আপনার সাথে যোগাযোগ করবে।</p>
+                    <form action="#" method="POST" class="space-y-5">
+                        <div>
+                            <label for="name" class="font-semibold mb-1 block">আপনার নাম *</label>
+                            <input type="text" id="name" placeholder="এখানে আপনার সম্পূর্ণ নাম লিখুন" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                         <div>
+                            <label for="address" class="font-semibold mb-1 block">আপনার ঠিকানা *</label>
+                            <input type="text" id="address" placeholder="আপনার সম্পূর্ণ ঠিকানা লিখুন" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                         <div>
+                            <label for="phone" class="font-semibold mb-1 block">মোবাইল নাম্বার *</label>
+                            <input type="tel" id="phone" placeholder="আপনার ১১ ডিজিটের মোবাইল নাম্বার দিন" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-primary-dark transition duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-cart mr-2"></i> অর্ডার কনফার্ম করুন
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+             <a href="#" class="text-2xl font-bold text-primary mb-2 inline-block">
+                GISTOS
+            </a>
+            <p class="text-gray-400 text-sm mb-4">স্বাদ ও স্বাস্থ্যের সেরা মিশ্রণ।</p>
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-gray-500 text-xs">&copy; 2025 Gistos. সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+</body>
+</html>

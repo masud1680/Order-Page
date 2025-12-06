@@ -1,0 +1,105 @@
+
+
+
+
+
+{% extends "admin/admin_dashboard.html" %}
+
+{% block title %}Admin Update Photos{% endblock title %}
+
+{% block content %}
+
+            <h1 class="text-4xl font-bold text-gray-800 mb-8 lg:md:ml-20 md:ml-20">Admin Update Photos</h1>
+   <form class="sm:w-10 md:w-1/3 lg:w-1/2 mx-auto my-20 " action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+      {% if form.instance.font_asset %}
+    <div class="mb-4  ">
+      <img src="{{ form.instance.font_asset.url }}" 
+           class="h-32 w-auto mx-auto rounded-lg border border-gray-300 shadow-md">
+    </div>
+  {% endif %}
+
+     
+
+     {% if form.font_asset %}
+     
+     {{ form.font_asset }}
+
+     {% else %}
+
+     {{form}}
+     {% endif %}  
+<button type="submit" 
+        class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+               text-white font-bold py-3 px-6 rounded-lg shadow-lg
+               hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600
+               active:scale-95 transition-transform duration-200">
+    Submit
+</button>
+   </form>
+
+
+
+<script>
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+           
+
+            
+            
+            
+        
+            
+            function hideDesktopSidebar() {
+                sidebar.classList.remove('md:w-64');
+                sidebar.classList.add('w-0');
+                sidebarContent.classList.replace('opacity-100', 'opacity-0');
+                desktopSidebarToggle.classList.remove('sidebar-open-btn-transform');
+                
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+            }
+
+            function showDesktopSidebar() {
+                sidebar.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    sidebar.classList.remove('w-0');
+                    sidebar.classList.add('md:w-64');
+                    sidebarContent.classList.replace('opacity-0', 'opacity-100');
+                    desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+                }, 10);
+            }
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            desktopSidebarToggle.addEventListener('click', () => {
+                const isVisible = sidebar.classList.contains('md:w-64');
+                if (isVisible) {
+                    hideDesktopSidebar();
+                } else {
+                    showDesktopSidebar();
+                }
+            });
+
+            if (sidebar.classList.contains('md:w-64')) {
+                desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+            }
+  
+        });
+</script>
+
+{% endblock content %}

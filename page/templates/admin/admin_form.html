@@ -1,0 +1,344 @@
+
+{% extends "admin/admin_dashboard.html" %}
+
+{% block title %}Admin Create Order{% endblock title %}
+
+{% block content %}
+
+            <h1 class="text-4xl font-bold text-gray-800 mb-8 ml-20">Admin Create Order</h1>
+<section id="order-form" class="bg-white p-8 ">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-dark-text">অর্ডার করতে নিচের ফর্মটি সঠিক ভাবে পূরণ করুন</h2>
+                    <p class="text-medium-text max-w-3xl mx-auto mt-2">আপনার প্রোডাক্টের কালার, সাইজ এবং আপনার নাম ও ঠিকানা সতর্কতার সাথে পূরণ করুন। আপনার দেওয়া ঠিকানায় ২-৩ কার্যদিবসের মধ্যে ডেলিভারি করা হবে।</p>
+                </div>
+                
+                <form  class="grid grid-cols-1 md:grid-cols-2 gap-10" method='POST' onsubmit="collectSpanValue()">
+                    {% csrf_token %}
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 text-dark-text">Billing details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="name" class="font-semibold text-medium-text mb-1 block">আপনার নাম <span class="text-red-500">*</span></label>
+                                <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark-purple " required>
+                            </div>
+                            <div>
+                               <label for="phone" class="font-semibold text-medium-text mb-1 block">আপনার মোবাইল <span class="text-red-500">*</span></label>
+                               <input type="tel" pattern="[0-9]*" id="phone" name="phone"class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark-purple " required>
+                           </div>
+                             <div>
+                                <label for="address" class="font-semibold text-medium-text mb-1 block">আপনার ঠিকানা <span class="text-red-500">*</span></label>
+                                <input type="text" id="address" name="address" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark-purple " required>
+                            </div>
+                             <div>
+                                <label for="comment" class="font-semibold text-medium-text mb-1 block">আপনার মতামত<span class="text-red-500">*</span></label>
+                                <textarea type="text" id="addrcommentess" name="comment" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark-purple " required> </textarea>
+                            </div>
+
+                                <div class="mt-6 bg-gray-50 p-4 rounded-md">
+                                <div class="space-y-3">
+                                    <label for="cod" class="flex items-center">
+                                        <input type="radio" id="insideDl" name="area" value="Inside Dhaka" class="h-4 w-4 text-brand-dark-purple focus:ring-brand-dark-purple " required checked>
+                                        <span class="ml-3 font-semibold">Inside Dhaka</span>
+                                    </label>
+                                    <p class="text-sm text-gray-500 ml-7">Pay with {{product_details.insideDhaka}} BDT upon delivery.</p>
+                                    <label for="cod" class="flex items-center">
+                                        <input type="radio" id="outsideDl" name="area" value="Outside Dhaka" class="h-4 w-4 text-brand-dark-purple focus:ring-brand-dark-purple " required>
+                                        <span class="ml-3 font-semibold">Outside Dhaka</span>
+                                    </label>
+                                    <p class="text-sm text-gray-500 ml-7">Pay with {{product_details.outsideDhaka}} BDT upon delivery.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 text-dark-text">Your order</h3>
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <div class="flex justify-between items-center border-b pb-3 mb-3">
+                                <span class="font-bold">Product</span>
+                                <span class="font-bold">Stock ({{product_details.quantity}})</span>
+                                <span class="font-bold">Price</span>
+                            </div>
+                            <div class="flex justify-between items-center text-medium-text border-b pb-3 mb-3">
+                                <span id="productName" >{{product_details.name}}</span> <!--সালাত লং হিজাব-->
+                                <input type="hidden" name="product_name" id="productName_input">
+
+
+  <div class="flex items-center space-x-2">
+    <!-- Minus Button -->
+    <button type="button" id="decrease" 
+      class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">-</button>
+
+    <!-- Quantity Input -->
+     <span id="quantitySpan" >1</span>
+    <input  type="hidden" id="quantity" name="quantity" value="1" min="1"
+      class="w-16 text-center border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+
+    <!-- Plus Button -->
+    <button type="button" id="increase" 
+      class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">+</button>
+  </div>
+
+
+                            <span>৳<span><span id="productPrice" >{{product_details.price}}</span>.00</span></span>
+                            <input type="hidden" name="price" id="productPrice_input">
+                            </div>
+                            <div class="flex justify-between items-center text-medium-text border-b pb-3 mb-3">
+                                <span id="deliveryName" >Inside Dhaka</span>
+                                
+                                <span>৳<span id="deliveryPrice" >{{product_details.insideDhaka}}</span></span>
+                                <input type="hidden" name="delivery_charge" id="deliveryPrice_input">
+                            </div>
+                            {% comment %} <div class="flex justify-between items-center text-medium-text border-b pb-3 mb-3">
+                                <span>Subtotal</span>
+                                <span>৳1,050.00</span>
+                            </div> {% endcomment %}
+                             <div class="flex justify-between items-center font-bold text-dark-text">
+                                <span>Total</span>
+                                <span>৳<span><span id="totalProductPrice" >{{product_details.price}}</span>.00</span></span>
+                                <input type="hidden" name="total_price" id="totalProductPrice_input">
+                            </div>
+
+                            <div class="mt-6 bg-gray-50 p-4 rounded-md">
+                                <div class="space-y-3">
+
+                                    <label for="cod" class="flex items-center">
+                                        <input type="radio" id="onlinePayment" name="payment_method" value="Online Payment" class="h-4 w-4 text-brand-dark-purple focus:ring-brand-dark-purple" >
+                                        <span class="ml-3 font-semibold">Online Payment</span>
+                                    </label>
+                                    <p class="text-sm text-gray-500 ml-7">Pay with Bkash, Rocket, Nagad.</p>
+                                    <div id="transaction_id" class="hidden">
+                                          <label>
+                                            <input for="tm" type="radio" name="transaction_method" value="bkash">
+                                            Bkash
+                                            </label>
+
+                                            <label>
+                                            <input for="tm" type="radio" name="transaction_method" value="rocket">
+                                            Rocket
+                                            </label>
+                                            
+                                            <label>
+                                            <input for="tm" type="radio" name="transaction_method" value="nagad">
+                                            Nagad
+                                            </label>
+                                        <input type="text"  name="transaction_id"
+                                        placeholder="Enter your payment transaction ID"
+                                        class=" mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg 
+                                        shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 
+                                        focus:border-blue-500 sm:text-sm"  />
+                                        </div>
+                                    <label for="cod" class="flex items-center">
+                                        <input type="radio" id="cashPayment" name="payment_method" value="Cash on delivery" class="h-4 w-4 text-brand-dark-purple focus:ring-brand-dark-purple" checked>
+                                        <span class="ml-3 font-semibold">Cash on delivery</span>
+                                    </label>
+                                    <p class="text-sm text-gray-500 ml-7">Pay with cash upon delivery.</p>
+                                    
+
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full mt-6 bg-brand-green text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-brand-green-dark transition duration-300">
+                                Place Order <span>৳<span><span id="buttonProductPrice">{{product_details.price}} </span>.00</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </section>
+
+
+
+<script>
+
+    // when window reload insidedhaka Delivery charge sum to single product quentity
+    function defaultTotalPrice(){
+        let winTotalSum = {{product_details.price}} + {{product_details.insideDhaka}};
+        const totalProductPrice = document.getElementById("totalProductPrice").innerText = winTotalSum;
+        const buttonProductPrice = document.getElementById('buttonProductPrice').innerText = winTotalSum; 
+    }
+
+    window.onload = defaultTotalPrice;
+
+  // input quantity
+  const decreaseBtn = document.getElementById("decrease");
+  const increaseBtn = document.getElementById("increase");
+  const quantityInput = document.getElementById("quantity");
+
+  // Decrease
+  decreaseBtn.addEventListener("click", () => {
+    let current = parseInt(quantityInput.value) || 1;
+    if (current > 1) {
+      quantityInput.value = current - 1;
+    };
+    // show quantity span value
+    document.getElementById("quantitySpan").innerText = document.getElementById('quantity').value;
+    // update price when quantity update
+
+  const currentProductPrice = document.getElementById("productPrice");
+  let updateProductPrice = {{product_details.price}} * quantityInput.value;
+  //.log(updateProductPrice)
+  currentProductPrice.innerText = updateProductPrice;
+
+totalSum()
+  });
+
+  // Increase
+  increaseBtn.addEventListener("click", () => {
+    let current = parseInt(quantityInput.value) || 1;
+    quantityInput.value = current + 1;
+
+    // show quantity span value
+    document.getElementById("quantitySpan").innerText = document.getElementById('quantity').value;
+
+        // update price when quantity update
+
+  const currentProductPrice = document.getElementById("productPrice");
+  let updateProductPrice = {{product_details.price}} * quantityInput.value;
+  //console.log(updateProductPrice)
+  currentProductPrice.innerText = updateProductPrice;
+
+totalSum()
+  });
+
+  // update delevery deliveryMethod
+
+  const insideDlBtn = document.getElementById("insideDl");
+  const outsideDlBtn = document.getElementById("outsideDl");
+
+  // inside dhaka price & name update
+  insideDlBtn.addEventListener('click', ()=>{
+
+    const deliveryName = document.getElementById('deliveryName').innerText = "Inside Dhaka";
+    const deliveryPrice = document.getElementById('deliveryPrice').innerText = {{product_details.insideDhaka}};
+
+    totalSum()
+  });
+
+  // outside dhaka price & name update
+  outsideDlBtn.addEventListener('click', ()=>{
+
+    const deliveryName = document.getElementById('deliveryName').innerText = "Outside Dhaka";
+    const deliveryPrice = document.getElementById('deliveryPrice').innerText = {{product_details.outsideDhaka}};
+
+    totalSum()
+  });
+
+  //show online payment btn inputbox
+  const onlinePaymentBtn = document.getElementById("onlinePayment");
+  onlinePaymentBtn.addEventListener('click', ()=>{
+
+    document.getElementById('transaction_id').classList = 'block';
+  });
+  
+  //hide online payment btn inputbox
+  const cashPaymentBtn = document.getElementById("cashPayment");
+  cashPayment.addEventListener('click', ()=>{
+
+    document.getElementById('transaction_id').classList = 'hidden';
+  });
+
+// sum of total price
+
+function totalSum(){
+    const currentProductPrice = document.getElementById("productPrice").innerText;
+    const deliveryPrice = document.getElementById('deliveryPrice').innerText;
+
+    let totalPrice = parseInt(currentProductPrice) + parseInt(deliveryPrice);
+
+    const totalProductPrice = document.getElementById("totalProductPrice").innerText = totalPrice;
+    const buttonProductPrice = document.getElementById('buttonProductPrice').innerText = totalPrice;
+};
+
+function collectSpanValue(){
+    //alert('working');
+
+    // collect product name
+    document.getElementById('productName_input').value = document.getElementById('productName').innerText;
+    // collect product price
+    document.getElementById('productPrice_input').value = document.getElementById('productPrice').innerText;
+    // collect deliveryPrice 
+    document.getElementById('deliveryPrice_input').value = document.getElementById('deliveryPrice').innerText;
+    // collect product total price
+    document.getElementById('totalProductPrice_input').value = document.getElementById('totalProductPrice').innerText;
+
+
+};
+
+
+//-----------for side brand
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const addOrderBtn = document.getElementById('add-order-btn');
+            const orderListBody = document.getElementById('order-list-body');
+
+            
+            
+            
+        
+            
+            function hideDesktopSidebar() {
+                sidebar.classList.remove('md:w-64');
+                sidebar.classList.add('w-0');
+                sidebarContent.classList.replace('opacity-100', 'opacity-0');
+                desktopSidebarToggle.classList.remove('sidebar-open-btn-transform');
+                
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+            }
+
+            function showDesktopSidebar() {
+                sidebar.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    sidebar.classList.remove('w-0');
+                    sidebar.classList.add('md:w-64');
+                    sidebarContent.classList.replace('opacity-0', 'opacity-100');
+                    desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+                }, 10);
+            }
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            desktopSidebarToggle.addEventListener('click', () => {
+                const isVisible = sidebar.classList.contains('md:w-64');
+                if (isVisible) {
+                    hideDesktopSidebar();
+                } else {
+                    showDesktopSidebar();
+                }
+            });
+
+
+
+
+
+
+
+
+  
+
+            
+            if (sidebar.classList.contains('md:w-64')) {
+                desktopSidebarToggle.classList.add('sidebar-open-btn-transform');
+            }
+            renderOrders();
+            
+
+
+            
+        });
+</script>
+
+{% endblock content %}

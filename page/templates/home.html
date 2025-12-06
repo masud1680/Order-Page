@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - Modern Apparel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // You can add custom Tailwind configuration here if needed
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold text-indigo-600">Aura</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#" class="text-gray-600 hover:text-indigo-600 transition duration-300">Home</a>
+                <a href="#gallery" class="text-gray-600 hover:text-indigo-600 transition duration-300">Gallery</a>
+                <a href="#details" class="text-gray-600 hover:text-indigo-600 transition duration-300">About</a>
+                <a href="#" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300">Contact</a>
+            </div>
+            <button class="md:hidden text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="relative h-[85vh] bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop');">
+            
+
+[Image of a stylish woman shopping]
+
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div class="text-center text-white p-4">
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Style Redefined</h1>
+                    <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Discover our new collection of modern apparel, crafted for the conscious and the bold.</p>
+                    <a href="#gallery" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 duration-300 ease-in-out">Shop Collection</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center text-gray-900 mb-12">Featured Products</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop" alt="Red Sports Shoe" class="w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center">
+                                <button class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Details</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Aero-Run Sneakers</h3>
+                            <p class="text-indigo-500 font-bold">$125.00</p>
+                        </div>
+                    </div>
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop" alt="Silver Luxury Watch" class="w-full h-64 object-cover">
+                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center">
+                                <button class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Details</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Chrono-Luxe Watch</h3>
+                            <p class="text-indigo-500 font-bold">$299.99</p>
+                        </div>
+                    </div>
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=1780&auto=format&fit=crop" alt="Black Sunglasses" class="w-full h-64 object-cover">
+                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center">
+                                <button class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Details</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Urban Shades</h3>
+                            <p class="text-indigo-500 font-bold">$75.50</p>
+                        </div>
+                    </div>
+                    <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop" alt="Black Headphones" class="w-full h-64 object-cover">
+                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center">
+                                <button class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Details</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Sonic-Pro Headphones</h3>
+                            <p class="text-indigo-500 font-bold">$199.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="details" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=2070&auto=format&fit=crop" alt="Woman posing in stylish clothes" class="rounded-lg shadow-2xl w-full">
+                        
+                    </div>
+                    <div class="md:w-1/2">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Designed for Life, Styled for You</h2>
+                        <p class="text-gray-600 text-lg mb-6">
+                            At Aura, we believe that fashion should be both beautiful and functional. Our collections are crafted from premium, sustainable materials that feel as good as they look. We focus on timeless designs that empower you to express your unique style with confidence.
+                        </p>
+                        <ul class="space-y-3 text-gray-700 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Ethical Sourcing:</strong> Using only high-quality, sustainable fabrics.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Expert Craftsmanship:</strong> Attention to every detail, from stitch to seam.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Timeless Style:</strong> Versatile pieces that outlast seasonal trends.</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition duration-300">Discover Our Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-6 py-10">
+            <div class="text-center">
+                <a href="#" class="text-3xl font-bold text-indigo-500">Aura</a>
+                <p class="mt-4 max-w-md mx-auto">Modern apparel for the modern world. Live with style and confidence.</p>
+                <div class="flex justify-center space-x-6 mt-6">
+                    <a href="#" class="hover:text-indigo-400">Facebook</a>
+                    <a href="#" class="hover:text-indigo-400">Instagram</a>
+                    <a href="#" class="hover:text-indigo-400">Twitter</a>
+                </div>
+            </div>
+            <hr class="my-8 border-gray-700">
+            <p class="text-center text-gray-400 text-sm">&copy; 2025 Aura. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

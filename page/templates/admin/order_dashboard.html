@@ -1,0 +1,239 @@
+{% extends "admin/admin_dashboard.html" %}
+
+{% block title %}Order Dashboard{% endblock title %}
+
+{% block content %}
+
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 ml-20">All Orders</h1>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                    <div class="relative w-full md:w-1/3">
+                        <input id="input-search-order" type="text" placeholder="Search orders..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <select id="select-search-order" class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="All">Status: All</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <a href="{% url 'order-create' %}"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">Add Order</button></a>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 uppercase text-sm">
+                                <th class="py-3 px-4 w-12 text-center">ID</th><th class="py-3 px-4">Customer</th><th class="py-3 px-4">Product</th><th class="py-3 px-4">Amount</th><th class="py-3 px-4">Date</th><th class="py-3 px-4 text-center">Status</th><th class="py-3 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-list-body" class="text-gray-700"></tbody>
+                    </table>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <span class="text-sm text-gray-500">Showing 1 to 5 of 20 entries</span>
+                    <div class="flex items-center">
+                        <button class="px-3 py-1 border rounded-lg hover:bg-gray-100">Previous</button>
+                        <span class="px-3 py-1 text-white bg-blue-500 rounded-lg mx-2">1</span>
+                        <button class="px-3 py-1 border rounded-lg hover:bg-gray-100">Next</button>
+                    </div>
+                </div>
+            </div>
+
+
+                <div id="order-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center p-4 border-b flex-shrink-0">
+                <h3 class="text-2xl font-bold text-gray-800">Order Details</h3>
+                <button id="modal-close-btn" class="text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto">
+                <div class="md:col-span-1 flex flex-col items-center">
+                    <img id="modal-product-photo" src="" alt="Product Photo" class="w-48 h-48 object-cover rounded-lg shadow-md mb-4">
+                    <h4 id="modal-product-name" class="text-xl font-semibold text-center"></h4>
+                    <p id="modal-product-id" class="text-sm text-gray-500"></p>
+                </div>
+                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                    <div><strong class="text-gray-600 block">Customer:</strong> <span id="modal-customer-name"></span></div>
+                    <div><strong class="text-gray-600 block">Contact:</strong> <span id="modal-customer-contact"></span></div>
+                    <div class="sm:col-span-2"><strong class="text-gray-600 block">Email:</strong> <span id="modal-customer-email"></span></div>
+                    <hr class="sm:col-span-2 my-2">
+                    <div><strong class="text-gray-600 block">Quantity:</strong> <span id="modal-quantity"></span></div>
+                    <div><strong class="text-gray-600 block">Unit Amount:</strong> <span id="modal-amount"></span></div>
+                    <div><strong class="text-gray-600 block">Total Amount:</strong> <span id="modal-total-amount" class="font-bold text-lg text-green-600"></span></div>
+                    <div><strong class="text-gray-600 block">Status:</strong> <span id="modal-status"></span></div>
+                    <hr class="sm:col-span-2 my-2">
+                    <div><strong class="text-gray-600 block">Location:</strong> <span id="modal-location"></span></div>
+                    <div class="sm:col-span-2"><strong class="text-gray-600 block">Full Address:</strong> <span id="modal-full-location"></span></div>
+                    <hr class="sm:col-span-2 my-2">
+                    <div><strong class="text-gray-600 block">Created:</strong> <span id="modal-created-date"></span></div>
+                    <div><strong class="text-gray-600 block">Updated:</strong> <span id="modal-updated-date"></span></div>
+                    <div class="sm:col-span-2 bg-gray-50 p-3 rounded-lg"><strong class="text-gray-600 block mb-1">Customer Comment:</strong><p id="modal-comment" class="text-gray-700"></p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script>
+    // Load all orders from Django context
+    const ordersData = JSON.parse('{{ orders_json|escapejs }}');
+    //console.log(ordersData);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ALL JAVASCRIPT IS THE SAME AS THE PREVIOUS VERSION
+            const sidebar = document.getElementById('sidebar');
+            const sidebarContent = document.getElementById('sidebar-content');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const modal = document.getElementById('order-details-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const orderListBody = document.getElementById('order-list-body');
+            const selectSearchOrder = document.getElementById('select-search-order');
+            const inputSearchOrder = document.getElementById('input-search-order');
+
+            function hideDesktopSidebar() { sidebar.classList.remove('md:w-64'); sidebar.classList.add('w-0'); sidebarContent.classList.replace('opacity-100', 'opacity-0'); desktopSidebarToggle.classList.remove('sidebar-open-btn-transform'); setTimeout(() => sidebar.classList.add('hidden'), 300); }
+            function showDesktopSidebar() { sidebar.classList.remove('hidden'); setTimeout(() => { sidebar.classList.remove('w-0'); sidebar.classList.add('md:w-64'); sidebarContent.classList.replace('opacity-0', 'opacity-100'); desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }, 10); }
+            mobileMenuBtn.addEventListener('click', () => navMenu.classList.toggle('hidden'));
+            desktopSidebarToggle.addEventListener('click', () => { if (sidebar.classList.contains('md:w-64')) hideDesktopSidebar(); else showDesktopSidebar(); });
+            if (sidebar.classList.contains('md:w-64')) { desktopSidebarToggle.classList.add('sidebar-open-btn-transform'); }
+
+            let orders = ordersData;
+                
+
+
+
+            function openModal() { modal.classList.remove('hidden'); }
+            function closeModal() { modal.classList.add('hidden'); }
+
+            function populateModal(order) {
+                document.getElementById('modal-product-photo').src = order.photoUrl;
+                document.getElementById('modal-product-name').textContent = order.product;
+                document.getElementById('modal-product-id').textContent = `Order ID: #${order.id}`;
+                document.getElementById('modal-customer-name').textContent = order.customer;
+                document.getElementById('modal-customer-contact').textContent = order.contact;
+                document.getElementById('modal-customer-email').textContent = order.email;
+                document.getElementById('modal-quantity').textContent = order.quantity;
+                let amount = parseFloat(order.amount);
+                document.getElementById('modal-amount').textContent = `$${amount.toFixed(2)}`;
+                let totalamount = parseFloat(order.totalamount);
+                document.getElementById('modal-total-amount').textContent = `$${totalamount.toFixed(2)}`;
+                document.getElementById('modal-status').innerHTML = `<span class="py-1 px-3 rounded-full text-xs ${getStatusClass(order.status)}">${order.status}</span>`;
+                document.getElementById('modal-location').textContent = order.location;
+                document.getElementById('modal-full-location').textContent = order.fullAddress;
+                document.getElementById('modal-created-date').textContent = order.createdAt;
+                document.getElementById('modal-updated-date').textContent = order.updatedAt;
+                document.getElementById('modal-comment').textContent = order.comment || 'N/A';
+            }
+
+
+            // show orders result with their status
+            selectSearchOrder.addEventListener('change' , (e)=>{
+
+                let status = selectSearchOrder.value;
+
+                if(status != "All"){
+
+                    renderStatusOrders(status);
+                }else{
+
+                    renderOrders();
+                }
+                
+            });
+
+            // input search box
+            inputSearchOrder.addEventListener('input' , (e)=>{
+
+                let inputValue = inputSearchOrder.value;
+                //console.log(inputValue);
+
+                if(inputValue){
+
+                    renderSearchOrders(inputValue);
+                }else{
+                    renderOrders();
+                }
+
+                
+            });
+            
+
+            orderListBody.addEventListener('dblclick', (event) => {
+                const row = event.target.closest('tr');
+                const orderId = row.dataset.orderId;
+                const orderData = orders.find(o => o.id == orderId);
+                if (orderData) { populateModal(orderData); openModal(); }
+            });
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (event) => { if (event.target === modal) { closeModal(); } });
+            
+            function getStatusClass(status) {
+                switch (status) {case 'Processing': return 'bg-gray-100 text-gray-800'; case 'Completed': return 'bg-green-100 text-green-800'; case 'Submitted': return 'bg-yellow-100 text-yellow-800'; case 'Cancelled': return 'bg-red-100 text-red-800'; default: return 'bg-gray-100 text-gray-800'; }
+            }
+
+
+            function renderSearchOrders(inputValue){
+                orderListBody.innerHTML = '';
+                orders.forEach(order => {
+                    if(order.customer.toLowerCase().includes(inputValue.toLowerCase())  || order.id == inputValue || order.contact == inputValue){
+                        
+                        const row = document.createElement('tr');
+                        row.className = 'border-b border-gray-200 hover:bg-gray-50 cursor-pointer';
+                        row.dataset.orderId = order.id;
+                        let amount = parseFloat(order.amount);
+                        row.innerHTML = `<td class="py-3 px-4 font-medium text-gray-500 text-center">#${order.id}</td><td class="py-3 px-4"><div class="font-semibold">${order.customer}</div><div class="text-sm text-gray-500">${order.email}</div></td><td class="py-3 px-4">${order.product}</td><td class="py-3 px-4">$${amount.toFixed(2)}</td><td class="py-3 px-4">${order.createdAt}</td><td class="py-3 px-4 text-center"><span class="py-1 px-3 rounded-full text-xs ${getStatusClass(order.status)}">${order.status}</span></td><td class="py-3 px-4 text-center"><button id="order-edit-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 px-3 rounded-lg text-xs transition duration-300"> <a href="/page/admin-dashboard/order-update/${order.id}"> Edit </a> </button></td>`;
+                        orderListBody.appendChild(row);
+                    }
+                });
+            }
+
+            function renderStatusOrders(status) {
+                orderListBody.innerHTML = '';
+                orders.forEach(order => {
+                    if(order.status == status){
+                        
+                        const row = document.createElement('tr');
+                        row.className = 'border-b border-gray-200 hover:bg-gray-50 cursor-pointer';
+                        row.dataset.orderId = order.id;
+                        let amount = parseFloat(order.amount);
+                        row.innerHTML = `<td class="py-3 px-4 font-medium text-gray-500 text-center">#${order.id}</td><td class="py-3 px-4"><div class="font-semibold">${order.customer}</div><div class="text-sm text-gray-500">${order.email}</div></td><td class="py-3 px-4">${order.product}</td><td class="py-3 px-4">$${amount.toFixed(2)}</td><td class="py-3 px-4">${order.createdAt}</td><td class="py-3 px-4 text-center"><span class="py-1 px-3 rounded-full text-xs ${getStatusClass(order.status)}">${order.status}</span></td><td class="py-3 px-4 text-center"><button id="order-edit-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 px-3 rounded-lg text-xs transition duration-300"> <a href="/page/admin-dashboard/order-update/${order.id}"> Edit </a> </button></td>`;
+                        orderListBody.appendChild(row);
+                    }
+                });
+            }
+
+
+            function renderOrders() {
+                orderListBody.innerHTML = '';
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-gray-200 hover:bg-gray-50 cursor-pointer';
+                    row.dataset.orderId = order.id;
+                    let amount = parseFloat(order.amount);
+                    row.innerHTML = `<td class="py-3 px-4 font-medium text-gray-500 text-center">#${order.id}</td><td class="py-3 px-4"><div class="font-semibold">${order.customer}</div><div class="text-sm text-gray-500">${order.email}</div></td><td class="py-3 px-4">${order.product}</td><td class="py-3 px-4">$${amount.toFixed(2)}</td><td class="py-3 px-4">${order.createdAt}</td><td class="py-3 px-4 text-center"><span class="py-1 px-3 rounded-full text-xs ${getStatusClass(order.status)}">${order.status}</span></td><td class="py-3 px-4 text-center"><button id="order-edit-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-1 px-3 rounded-lg text-xs transition duration-300"> <a href="/page/admin-dashboard/order-update/${order.id}"> Edit </a> </button></td>`;
+                    orderListBody.appendChild(row);
+                });
+            }
+
+            renderOrders();
+
+        // Update Django link
+       //  let UpdateOrderEditBtn = document.getElementById("order-edit-btn");
+        //UpdateOrderEditBtn.href = `/admin-dashboard/order-update/order-update/${userId}`;
+        
+    
+    
+    });
+
+    </script>
+{% endblock content %}
+
+

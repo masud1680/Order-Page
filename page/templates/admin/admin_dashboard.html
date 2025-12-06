@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>{% block title %}Just Admin Dashboard{% endblock title %}</title>
+      <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .sidebar-open-btn-transform {
+            transform: translateX(16rem); /* 16rem is the width of the sidebar (w-64) */
+        }
+    </style>
+
+    <script>
+        // Custom Tailwind CSS Configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Bengali', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-purple': '#F0F2FF', // Main light purple background
+                        'brand-dark-purple': '#4C5FD5',
+                        'brand-green': '#28a745', // Green for buttons
+                        'brand-green-dark': '#218838',
+                        'dark-text': '#333333',
+                        'medium-text': '#555555',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex flex-col md:flex-row h-screen overflow-hidden">
+        {% include "nav/admin_nav.html" %}
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <button id="desktop-sidebar-toggle" class="hidden md:inline-flex fixed top-6 left-6 z-10 items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-transform duration-300 ease-in-out">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            {% block content %}{% endblock content %}
+        </main>
+    </div>
+
+
+</body>
+</html>

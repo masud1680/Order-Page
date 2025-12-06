@@ -1,0 +1,21 @@
+        <aside id="sidebar" class="w-full md:w-64 bg-gray-800 text-white md:flex-shrink-0 transition-all duration-300 ease-in-out md:overflow-y-auto">
+            <div id="sidebar-content" class="h-full flex flex-col transition-opacity duration-200">
+                <div class="flex justify-between items-center p-6">
+                    <div class="text-2xl font-bold">AdminPanel</div>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <nav id="nav-menu" class="hidden md:block mt-2 md:mt-8 md:flex-1">
+                    <a href="{% url 'admin-dashboard' %}" class="block py-2.5 px-6 bg-gray-700">Dashboard</a>
+                    <a href="{% url 'order-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Orders</a>
+                    <a href="{% url 'users-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Customers</a>
+                    <a href="{% url 'content-dashboard' %}" class="block py-2.5 px-6 hover:bg-gray-700">Content</a>
+                    {% comment %} <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Products</a>
+                    <a href="#" class="block py-2.5 px-6 hover:bg-gray-700">Settings</a> {% endcomment %}
+                </nav>
+            </div>
+        </aside>

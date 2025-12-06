@@ -1,0 +1,11 @@
+{% extends "admin/admin_dashboard.html" %}
+
+{% block title %}Server Fast update{% endblock title %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{form}}
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}
