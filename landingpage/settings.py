@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from decouple import config # using for environment variable
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,8 @@ SECRET_KEY = 'django-insecure-%3ifo2^5@87k!585sg*()ar7$!m9+-0(g60^bcwu#^@hb^uurk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'http://127.0.0.1:8000']
 
 
 # Application definition
@@ -87,15 +90,25 @@ WSGI_APPLICATION = 'landingpage.wsgi.application'
 # DB_PASSWORD=1234
 # DB_HOST=localhost
 # DB_PORT=5432
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'order_management',
+#         'USER': "postgres",
+#         'PASSWORD': "1234",
+#         'HOST': "localhost",
+#         'PORT': "5432",
+#     }
+# }
+
+# Online Onrender.com pg database connect
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'order_management',
-        'USER': "postgres",
-        'PASSWORD': "1234",
-        'HOST': "localhost",
-        'PORT': "5432",
-    }
+    'default': dj_database_url.config(
+        default=config('ONLINE_DB'),
+        conn_max_age=600
+    )
 }
 
 # Password validation
