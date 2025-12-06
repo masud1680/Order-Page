@@ -391,13 +391,15 @@ from django.views.decorators.csrf import csrf_exempt
 def content_dashboard(request):
 
     
-    # get data from database send to fontand
+    #get data from database send to fontand
     font = get_object_or_404(FontSection, pk=1)
     feature = get_object_or_404(FeatureSection, pk=1)
     contact = get_object_or_404(ContactSection, pk=1)
     gallery = get_object_or_404(GellerySection, pk=1)
     galleryImg = GellerySection.objects.prefetch_related('photos').get(id = 1) 
     product = get_object_or_404(ProductDetails, pk=1)
+    
+
     
     # recived data from fontand send to database
     if request.method == "POST":
